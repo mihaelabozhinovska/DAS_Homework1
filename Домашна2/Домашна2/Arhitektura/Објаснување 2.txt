@@ -1,0 +1,14 @@
+Register Controller - Register Service - User Repository
+When a user registers, the Register Controller receives the request from the MVC Controller and forwards it to the Register Service. This service checks the validity of the submitted data and then saves it to the database. The User Repository is responsible for handling the persistence of the user data in the database.
+
+Login Controller - Login Service - User Repository
+During login, the Login Controller receives the request and forwards it to the Login Service. The service performs user authentication and authorization using Spring Security. The User Repository is used to fetch user details from the database to verify credentials.
+
+Stock Issuer Controller - Stock Issuer Service - LSTM Service - Stock Issuer/Price Snapshot Repository
+When a request to search for a stock issuer is made, the Stock Issuer Controller receives the request from the MVC Controller and forwards it to the Stock Issuer Service. This service contains the core business logic, selecting the relevant stock issuer and retrieving its historical data from the Stock Issuer and Price Snapshot Repositories. A request is then made to the LSTM Service, which predicts the stock price for the upcoming month based on the historical data for the selected stock issuer.
+
+Technologies Used:
+
+Frontend: Bootstrap, Thymeleaf
+Backend: Spring Boot, Python
+Database: PostgreSQL
