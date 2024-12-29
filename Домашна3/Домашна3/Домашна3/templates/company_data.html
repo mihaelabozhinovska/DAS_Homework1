@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historical Data - {{ company_code }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        function paginateData(page) {
+            let rows = document.querySelectorAll('.data-row');
+            let rowsPerPage = 10;
+            let start = (page - 1) * rowsPerPage;
+            let end = page * rowsPerPage;
+
+            rows.forEach(row => row.style.display = 'none');
+            for (let i = start; i < end && i < rows.length; i++) {
+                rows[i].style.display = '';
+            }
+
+            document.querySelectorAll('.pagination-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            document.getElementById('page-' + page).classList.add('active');
+        }
+
+        window.onload = function() {
+            paginateData(1);
+        };
+    </script>
+</head>
+<body style="background-color: #f1f5f9;">
+
+    <!-- Navbar Section -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="#">Stock Insights</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="container mt-5">
+        <div class="text-center mb-4">
+            <h1 class="display-4 text-primary">Historical Data for {{ company_code }}</h1>
+            <p class="lead text-muted">Explore the detailed stock history and analytics of your selected company.</p>
+        </div>
+
+        <!-- Data Table -->
+        <div class="table-responsive shadow-sm p-4 bg-white rounded">
+            <table class="table table-bordered table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Last Price</th>
+                        <th scope="col">High Price</th>
+                        <th scope="col">Low Price</th>
+                        <th scope="col">Average Price</th>
+                        <th scope="col">% Change</th>
+                        <th scope="col">Volume</th>
+                        <th scope="col">Turnover Best</th>
+                        <th scope="col">Total Turnover</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in historical_data %}
+                        <tr class="data-row">
+                            <td>{{ row['record_date'] }}</td>
+                            <td>{{ row['last_price'] }}</td>
+                            <td>{{ row['high_price'] }}</td>
+                            <td>{{ row['low_price'] }}</td>
+                            <td>{{ row['avg_price'] }}</td>
+                            <td>{{ row['percent_change'] }}</td>
+                            <td>{{ row['volume'] }}</td>
+                            <td>{{ row['turnover_best'] }}</td>
+                            <td>{{ row['total_turnover'] }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="d-flex justify-content-center mt-4">
+            <button id="page-1" class="btn btn-outline-info pagination-button" onclick="paginateData(1)">1</button>
+            <button id="page-2" class="btn btn-outline-info pagination-button" onclick="paginateData(2)">2</button>
+            <button id="page-3" class="btn btn-outline-info pagination-button" onclick="paginateData(3)">3</button>
+            <button id="page-4" class="btn btn-outline-info pagination-button" onclick="paginateData(4)">4</button>
+        </div>
+
+        <!-- Analysis Forms -->
+ <div class="row text-center mt-5">
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Technical Analysis</h5>
+                    <p class="card-text">Get predictions based on technical analysis.</p>
+                    <button id="technical-analysis-btn" class="btn btn-primary">Analyze</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Fundamental Analysis</h5>
+                    <p class="card-text">Get insights based on fundamental analysis.</p>
+                    <button id="fundamental-analysis-btn" class="btn btn-primary">Analyze</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">LSTM Prediction</h5>
+                    <p class="card-text">Get stock predictions using LSTM models.</p>
+                    <button id="lstm-btn" class="btn btn-primary">Analyze</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <div id="response-container" class="mt-4 text-center"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-3 mt-5">
+        <p>&copy; 2024 Stock Insights | All Rights Reserved</p>
+    </footer>
+
+    <!-- Bootstrap and JQuery JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    // Get companyCode from the page
+    var companyCode = "{{ company_code }}";
+
+    // AJAX form submission for Technical Analysis
+    $('#technical-analysis-btn').click(function(event) {
+        event.preventDefault();
+        $.post('/technical-analysis', { companyCode: companyCode }, function(response) {
+            var text = "Analysis for day: " + response.predicted_signal_1D + " - ";
+            text = text + "Analysis for week: " + response.predicted_signal_1W  + " - ";
+            text = text + "Analysis for month: " + response.predicted_signal_1M;
+            $('#response-container').html('<p>' + text + '</p>');
+        });
+    });
+
+    // AJAX form submission for Fundamental Analysis
+    $('#fundamental-analysis-btn').click(function(event) {
+        event.preventDefault();
+        $.post('/fundamental-analysis', { companyCode: companyCode }, function(response) {
+            $('#response-container').html('<p>' + response + '</p>');
+        });
+    });
+
+    // AJAX form submission for LSTM
+    $('#lstm-btn').click(function(event) {
+        event.preventDefault();
+        $.post('/lstm', { companyCode: companyCode }, function(response) {
+            $('#response-container').html('<p>' + response.predicted_price + '</p>');
+        });
+    });
+});
+</script>
+</body>
+</html>

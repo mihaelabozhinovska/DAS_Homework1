@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Your Company</title>
+    <!-- Tailwind CSS CDN for styling -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f4f7fc;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #3b82f6, #9333ea);
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+            border-bottom-left-radius: 50% 30%;
+            border-bottom-right-radius: 50% 30%;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-top: 10px;
+        }
+
+        .form-container {
+            background-color: #ffffff;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            max-width: 500px;
+            margin: -60px auto 40px auto;
+        }
+
+        .form-container label {
+            font-weight: bold;
+            color: #4b5563;
+        }
+
+        .form-container select, .form-container button {
+            border-radius: 8px;
+            font-size: 1rem;
+            padding: 12px 20px;
+        }
+
+        .form-container select {
+            width: 100%;
+            margin-top: 10px;
+            border: 1px solid #d1d5db;
+            background-color: #f9fafb;
+        }
+
+        .form-container button {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+
+        .form-container button:hover {
+            background-color: #2563eb;
+        }
+
+        .footer {
+            background-color: #1f2937;
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+        }
+
+        .footer p {
+            font-size: 0.9rem;
+        }
+
+        .navbar {
+            background-color: #1f2937;
+            padding: 10px 20px;
+        }
+
+        .navbar a {
+            color: white;
+            text-transform: uppercase;
+            font-weight: bold;
+            margin-right: 20px;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            color: #3b82f6;
+        }
+
+        .navbar .logo {
+            font-size: 1.6rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container mx-auto flex items-center justify-between">
+            <a href="#" class="logo">Stock Insights</a>
+            <div>
+                <a href="/">Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Select Your Preferred Company</h1>
+        <p>Find the best company by selecting from the list below and start exploring their data.</p>
+    </section>
+
+    <!-- Company Selection Form -->
+    <section class="form-container">
+        <form action="/company" method="POST">
+            <label for="companySelect">Choose a Company</label>
+            <select id="companySelect" name="company" required>
+                <option value="">Select a Company</option>
+                {% for code in company_codes %}
+                    <option value="{{ code }}">{{ code }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Proceed</button>
+        </form>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 Stock Insights. All Rights Reserved.</p>
+    </footer>
+
+    <!-- TailwindJS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/forms"></script>
+</body>
+</html>
